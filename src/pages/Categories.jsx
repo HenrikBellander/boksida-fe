@@ -34,7 +34,11 @@ const Categories = () => {
       <h2>Bokkategorier</h2>
       <ul>
         {categories.map((category) => (
-          <li key={category.book_category}>{category.book_category}</li>
+          <li key={category.book_category}>
+            <a href={`/category/${category.book_category}`}>
+              {category.book_category}
+            </a>
+          </li>
         ))}
       </ul>
     </div>
