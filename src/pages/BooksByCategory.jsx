@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { fetchBooksByCategory } from "../services/bookApi";
 import '../styles/books.css'; 
 
@@ -69,7 +69,12 @@ const BooksByCategory = () => {
         {books.map((book) => (
           <div key={book.book_id} className="book-item">
             <img src={book.book_image_url} alt={book.book_title} />
-            <p>{book.book_title}</p>
+            
+            <p>
+              <Link to={`/book/${book.book_id}`}>
+                {book.book_title}
+              </Link>
+            </p>
 
             <div className="stars">
               {renderStars(book.book_rating)} 
@@ -80,7 +85,5 @@ const BooksByCategory = () => {
     </div>
   );
 };
-
-
 
 export default BooksByCategory;
