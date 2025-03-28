@@ -1,39 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { fetchBooksByCategory } from "../services/bookApi";
-import '../styles/books.css'; 
+import FavoriteButton from "../components/FavoriteButton"; 
+import '../styles/books.css';
 
 const BooksByCategory = () => {
-  const { category } = useParams(); 
+  const { category } = useParams();
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  const [favorites, setFavorites] = useState([]);
 
-  const convertRatingToNumber = (rating) => {
-    switch (rating.toLowerCase()) {
-      case "one":
-        return 1;
-      case "two":
-        return 2;
-      case "three":
-        return 3;
-      case "four":
-        return 4;
-      case "five":
-        return 5;
-      default:
-        return 0; 
+  useEffect(() => {
+    const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    setFavorites(storedFavorites);
+  }, []);
+
+  const saveFavoritesToLocalStorage = (updatedFavorites) => {
+    localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+  };
+
+  const toggleFavorite = (bookId, status) => {
+    let updatedFavorites;
+    if (status) {
+      updatedFavorites = [...favorites, bookId];
+    } else {
+      updatedFavorites = favorites.filter(id => id !== bookId);
     }
+    setFavorites(updatedFavorites);
+    saveFavoritesToLocalStorage(updatedFavorites);
   };
 
   const renderStars = (rating) => {
-    const ratingNumber = convertRatingToNumber(rating); 
     let stars = [];
     for (let i = 1; i <= 5; i++) {
-      if (i <= ratingNumber) {
-        stars.push(<span key={i} className="star-rating full">&#9733;</span>); 
+      if (i <= rating) {
+        stars.push(<span key={i} className="star-rating full">&#9733;</span>);
       } else {
-        stars.push(<span key={i} className="star-rating empty">&#9733;</span>); 
+        stars.push(<span key={i} className="star-rating empty">&#9733;</span>);
       }
     }
     return stars;
@@ -68,16 +73,25 @@ const BooksByCategory = () => {
       <div className="books-container">
         {books.map((book) => (
           <div key={book.book_id} className="book-item">
-            <img src={book.book_image_url} alt={book.book_title} />
-            
+            <div className="image-container">
+              <img src={book.book_image_url} alt={book.book_title} />
+              <FavoriteButton 
+                bookId={book.book_id} 
+                isFavorite={favorites.includes(book.book_id)} 
+                toggleFavorite={toggleFavorite} 
+              />
+            </div>
+
             <p>
               <Link to={`/book/${book.book_id}`}>
                 {book.book_title}
               </Link>
             </p>
+            
+            <p className="book-price">Price: {book.book_price} </p>
 
             <div className="stars">
-              {renderStars(book.book_rating)} 
+              {renderStars(book.book_rating)}
             </div>
           </div>
         ))}
@@ -87,3 +101,7 @@ const BooksByCategory = () => {
 };
 
 export default BooksByCategory;
+
+
+
+
