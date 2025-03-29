@@ -1,18 +1,125 @@
+.book-detail, .search-results {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  text-align: center;
+  position: relative;
+}
+
+.book-detail h2, .search-results h2 {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.book-detail img, .search-results img {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.book-detail p, .search-results p {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.6;
+  margin-top: 15px;
+}
+
+.favorite-button {
+  display: inline-block;
+  padding: 0px 20px;
+  font-size: 16px;
+  color: #fff;
+  background: #ff4757;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 20px;
+}
+
+.favorite-button:hover {
+  background: #e84118;
+}
+
+.favorite-button.top-right {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.search-results {
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-results ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.search-results li {
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.search-results li:hover {
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+@media (max-width: 768px) {
+  .book-detail, .search-results {
+    max-width: 90%;
+    padding: 15px;
+  }
+
+  .book-detail h2, .search-results h2 {
+    font-size: 24px;
+  }
+
+  .book-detail p, .search-results p {
+    font-size: 14px;
+  }
+
+  .favorite-button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+}
+
+.book-price {
+  font-weight: bold;
+  color: #d32f2f; 
+  font-size: 1em;
+  margin-top: 5px;
+}
+
 .books-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 20px;
+  gap: 40px;
   padding: 10px;
 }
 
 .book-item {
+  width: 190px; 
+  word-wrap: break-word;
   text-align: center;
 }
 
 .book-item img {
-  width: 100px;
-  height: 150px;
-  border-radius: 5px;
+  width: 140px;
+  height: 210px;
+  border-radius: 6px;
 }
 
 .stars {
