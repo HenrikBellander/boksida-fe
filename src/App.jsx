@@ -4,8 +4,8 @@ import Categories from "./pages/Categories"
 import BooksByCategory from "./pages/BooksByCategory"
 import BookDetail from './pages/BookDetail'; 
 import Search from "./components/Search";
-
-
+import Register from "./pages/Register";
+import LoginPage from './pages/LoginPage';
 
 function App() {
 
@@ -18,6 +18,8 @@ function App() {
           <Route path="/category/:category" element={<BooksByCategory />} />
           <Route path="/book/:book_id" element={<BookDetail/>} />
           <Route path="/search" element={<Search />} />
+          <Route path="/register" element={<Register />}/>
+          <Route path="/login" element={<LoginPage />} />
         </Routes>
       </BrowserRouter>
     </>
