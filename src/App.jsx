@@ -2,8 +2,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Header from "./components/Header"
 import Categories from "./pages/Categories"
 import BooksByCategory from "./pages/BooksByCategory"
-import BookDetail from './pages/BookDetail'; 
-import LoginPage from './pages/LoginPage';
+import BookDetail from './pages/BookDetail'
+import Search from "./components/Search";
+import Register from './pages/Register'
+import Login from './pages/Login';
 
 
 function App() {
@@ -16,7 +18,9 @@ function App() {
           <Route path="/" element={<Categories />}/>
           <Route path="/category/:category" element={<BooksByCategory />} />
           <Route path="/book/:book_id" element={<BookDetail/>} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/register" element={<Register/>} />
+          <Route path="/login" element={<Login/>} />
         </Routes>
       </BrowserRouter>
     </>
