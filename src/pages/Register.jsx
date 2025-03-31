@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 
 
 const Register = () => {
-    let responseText = null
     const [formData, setFormData] = useState({
         name: '',
         email: ''
@@ -38,6 +37,7 @@ const Register = () => {
                 console.log('Data sent successfully:', data);
                 if (typeof(data) === 'number') {
                     setResponseMessage('User created successfully');
+                    setFormData({ username: '', password: '', email: '' });
                 } else {
                     setResponseMessage('Username already exists');
                 }
