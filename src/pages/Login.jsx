@@ -1,3 +1,53 @@
+import React, { useState } from 'react';
+import { useAuth } from "../context/AuthContext";
+import { loginUser } from '../services/authApi';
+
+function Login() {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const { login } = useAuth();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await loginUser({ username, password });
+            login(response.user);
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
+    return (
+        <div>
+            <h1>Login</h1>
+            {error && <div className="error">{error}</div>}
+            <form onSubmit={handleSubmit}>
+                <input
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="Username"
+                />
+                <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Password"
+                />
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    );
+}
+
+export default Login;
+
+
+
+
+
+/* old Login
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import FavoriteButton from '../components/FavoriteButton'
@@ -60,4 +110,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default Login*/
