@@ -13,7 +13,7 @@ const Categories = () => {
         setCategories(data);
         setLoading(false);
       } catch (err) {
-        setError('Kunde inte hämta kategorier');
+        setError('Could not fetch categories');
         setLoading(false);
       }
     };
