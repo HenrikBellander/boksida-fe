@@ -5,7 +5,6 @@ import BooksByCategory from "./pages/BooksByCategory"
 import Register from "./pages/Register";
 import BookDetail from './pages/BookDetail'; 
 import Search from "./components/Search";
-import Register from "./pages/Register";
 import LoginPage from './pages/LoginPage';
 
 
