@@ -162,3 +162,21 @@
   @keyframes spin {
     to { transform: rotate(360deg); }
   }
+
+.user-auth-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .username-display {
+    color: white;
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    .username-display {
+      color: #e0e0e0;
+    }
+  }

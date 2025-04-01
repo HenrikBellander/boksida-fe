@@ -10,7 +10,18 @@ function Login() {
     const { login } = useAuth();
     const navigate = useNavigate(); // Proper hook usage
 
+
     const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await loginUser({ username, password });
+            await login(response.data.user); // Wait for context update
+            navigate('/', { replace: true }); // Redirect after state updates
+        } catch (error) {
+            setError(error.message);
+        }
+    };
+    /*const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
 
@@ -21,7 +32,7 @@ function Login() {
             const response = await loginUser({ username, password });
             await login(response.user);
             console.log("Login response:", response);
-            /*login(response.user); // Update context */
+            
 
             console.log("Login successful:", response.user);
             navigate('/');
@@ -29,7 +40,8 @@ function Login() {
             console.error('Login error:', error);
             setError(error.message || 'Login failed. Please try again.');
         }
-    };
+    };*/
+    /*login(response.user); // Update context */
 
     return (
         <div>

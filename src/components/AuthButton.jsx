@@ -26,6 +26,10 @@ function AuthButton() {
 
     if (user) {
         return (
+        <div className="user-auth-container">
+            <span className="username-display">
+                Hello, {user.username}
+            </span>
             <button
                 onClick={handleLogout}
                 disabled={isLoggingOut}
@@ -40,6 +44,7 @@ function AuthButton() {
                     'Logout'
                 )}
             </button>
+        </div>
         );
     }
 

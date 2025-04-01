@@ -39,7 +39,6 @@ const Header = () => {
       <nav className="navbar">
         <a href="/" className="nav-link">Home</a>
         <a href="/register" className="nav-link">Register</a>
-        <a href="/login" className="nav-link">Login</a>
         <AuthButton />
       </nav>
     </header>

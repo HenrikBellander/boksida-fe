@@ -39,9 +39,9 @@ export const AuthProvider = ({ children }) => {
         checkAuth();
     }, []);*/
 
-    const login = (userData) => {
+    const login = async (userData) => {
         setUser(userData);
-        return Promise.resolve();
+        return await verifyToken();
     };
 
     /*const logout = async () => {
