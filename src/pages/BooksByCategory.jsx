@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { fetchBooksByCategory } from "../services/bookApi";
 import FavoriteButton from "../components/FavoriteButton"; 
+import BuyBookButton from "../components/BuyBookButton";
 import '../styles/books.css';
 
 const BooksByCategory = () => {
@@ -11,7 +12,9 @@ const BooksByCategory = () => {
   const [error, setError] = useState(null);
   
   const [favorites, setFavorites] = useState([]);
+  const [boughtBooks, setBoughtBooks] = useState([]);
 
+  // Load favorites from local storage
   useEffect(() => {
     const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
     setFavorites(storedFavorites);
@@ -30,6 +33,53 @@ const BooksByCategory = () => {
     }
     setFavorites(updatedFavorites);
     saveFavoritesToLocalStorage(updatedFavorites);
+  };
+
+  // Toggle Buy status and send request to backend
+  const toggleBuy = async (bookId, status) => {
+    // Assume that the user is logged in and user data is stored in localStorage as JSON.
+    const userData = JSON.parse(localStorage.getItem('user'));
+    const userId = userData ? userData.user_id : null;
+    if (!userId) {
+      console.error('User not logged in');
+      return;
+    }
+
+    if (status) {
+      // Add book to basket (quantity set to 1)
+      try {
+        const response = await fetch('http://localhost:5000/api/basket', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            user_id: userId,
+            book_id: bookId,
+            quantity: 1
+          })
+        });
+        if (!response.ok) {
+          throw new Error('Failed to add book to basket');
+        }
+        setBoughtBooks(prev => [...prev, bookId]);
+      } catch (error) {
+        console.error('Error adding book to basket:', error);
+      }
+    } else {
+      // Optionally: remove book from basket (if your API supports this)
+      try {
+        const response = await fetch(`http://localhost:5000/api/basket/${bookId}`, {
+          method: 'DELETE'
+        });
+        if (!response.ok) {
+          throw new Error('Failed to remove book from basket');
+        }
+        setBoughtBooks(prev => prev.filter(id => id !== bookId));
+      } catch (error) {
+        console.error('Error removing book from basket:', error);
+      }
+    }
   };
 
   const renderStars = (rating) => {
@@ -80,6 +130,11 @@ const BooksByCategory = () => {
                 isFavorite={favorites.includes(book.book_id)} 
                 toggleFavorite={toggleFavorite} 
               />
+              <BuyBookButton 
+                bookId={book.book_id} 
+                isBought={boughtBooks.includes(book.book_id)}
+                toggleBuy={toggleBuy}
+              />
             </div>
 
             <p>
@@ -88,7 +143,7 @@ const BooksByCategory = () => {
               </Link>
             </p>
             
-            <p className="book-price">Price: {book.book_price} </p>
+            <p className="book-price">Price: {book.book_price}</p>
 
             <div className="stars">
               {renderStars(book.book_rating)}
@@ -101,7 +156,3 @@ const BooksByCategory = () => {
 };
 
 export default BooksByCategory;
-
-
-
-
