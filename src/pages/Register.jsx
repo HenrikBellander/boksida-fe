@@ -8,6 +8,9 @@ const Register = () => {
         name: '',
         email: ''
     });
+  
+    const [responseMessage, setResponseMessage] = useState('');
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -19,6 +22,8 @@ const Register = () => {
 
     const handleRegister = async (e) => {
         e.preventDefault();
+        setResponseMessage('');
+
     
         // Skicka data till backend via API
         try {
@@ -34,6 +39,13 @@ const Register = () => {
             if (response.ok) {
                 const data = await response.json();
                 console.log('Data sent successfully:', data);
+
+                if (typeof(data) === 'number') {
+                    setResponseMessage('User created successfully');
+                    setFormData({ username: '', password: '', email: '' });
+                } else {
+                    setResponseMessage('Username already exists');
+                }
             } else {
                 
                 console.error('Error sending data:', response);
@@ -54,8 +66,16 @@ const Register = () => {
                 <input type='text' name='email' value={formData.email} onChange={handleChange}/><br/>
                 <button type='submit'>Register</button>
             </form>
+
+            {responseMessage && (
+                <div>
+                    {responseMessage}
+                </div>
+            )}
         </div>
     );
 };
 
+
 export default Register;
+

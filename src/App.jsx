@@ -9,6 +9,7 @@ import Search from "./components/Search";
 import Register from './pages/Register';
 import Login from './pages/Login';
 
+
 function App() {
   return (
     <AuthProvider>
@@ -26,6 +27,7 @@ function App() {
             <Route path="/book/:book_id" element={<BookDetail />} />
             <Route path="/search" element={<Search />} />
           </Route>
+
         </Routes>
       </BrowserRouter>
     </AuthProvider>
