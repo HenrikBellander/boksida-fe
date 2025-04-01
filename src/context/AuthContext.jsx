@@ -7,7 +7,24 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
+    // Add persistent session check
     useEffect(() => {
+        const verifySession = async () => {
+            try {
+                const userData = await verifyToken();
+                setUser(userData);
+            } catch (error) {
+                setUser(null);
+                console.log(error)
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        verifySession();
+    }, []);
+
+    /*useEffect(() => {
         const checkAuth = async () => {
             try {
                 const userData = await verifyToken();
@@ -20,22 +37,37 @@ export const AuthProvider = ({ children }) => {
             }
         };
         checkAuth();
-    }, []);
+    }, []);*/
 
     const login = (userData) => {
         setUser(userData);
+        return Promise.resolve();
     };
 
-    const logout = async () => {
+    /*const logout = async () => {
         try {
-            await fetch('/auth/logout', { 
-                method: 'POST', 
-                credentials: 'include' 
+            await fetch('/logout', {
+                method: 'POST',
+                credentials: 'include'
             });
         } finally {
             setUser(null);
         }
-    };
+    };*/
+
+    const logout = async () => {
+        try {
+            await fetch('http://localhost:5000/logout', {
+            method: 'POST',
+            credentials: 'include'
+            });
+          setUser(null); // Clear local state
+        } catch (error) {
+            console.error('Logout error:', error);
+        }
+        };
+
+
 
     const value = {
         user,
@@ -58,3 +90,5 @@ export function useAuth() {
     }
     return context;
 }
+
+

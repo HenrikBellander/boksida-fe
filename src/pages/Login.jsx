@@ -12,18 +12,22 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError('');
+
         console.log("Login attempted with:", { username, password });
         
         try {
             console.log("Attempting login API call");
             const response = await loginUser({ username, password });
-            
-            login(response.user);
+            await login(response.user);
+            console.log("Login response:", response);
+            /*login(response.user); // Update context */
+
             console.log("Login successful:", response.user);
             navigate('/');
-        } catch (err) {
-            console.error('Login error:', err);
-            setError(err.message || 'Login failed. Please try again.');
+        } catch (error) {
+            console.error('Login error:', error);
+            setError(error.message || 'Login failed. Please try again.');
         }
     };
 
