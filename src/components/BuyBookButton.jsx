@@ -1,18 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import "../styles/buyBookButton.css"; 
 
 const BuyBookButton = ({ bookId, isBought, toggleBuy }) => {
-  const [bought, setBought] = useState(isBought);
-
   const handleClick = () => {
-    setBought(!bought);
-    toggleBuy(bookId, !bought);
+    toggleBuy(bookId, !isBought);
   };
 
   return (
     <button
       onClick={handleClick}
-      className={`buy-btn ${bought ? "active" : ""}`}
+      className={`buy-btn ${isBought ? "active" : ""}`}
     >
       &#10004;
     </button>

@@ -22,6 +22,27 @@ const BooksByCategory = () => {
     setFavorites(storedFavorites);
   }, []);
 
+  // Hämta varukorgen när komponenten mountas
+  useEffect(() => {
+    const fetchBasket = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/api/basket/2`);
+        if (!response.ok) {
+          throw new Error('Kunde inte hämta varukorgen');
+        }
+        const data = await response.json();
+        setBasket(data);
+        if (data.basket_items) {
+          setBoughtBooks(data.basket_items.map(item => item.book_id));
+        }
+      } catch (error) {
+        console.error("Error fetching basket:", error);
+      }
+    };
+
+    fetchBasket();
+  }, []);  
+
   const saveFavoritesToLocalStorage = (updatedFavorites) => {
     localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
   };
@@ -37,42 +58,40 @@ const BooksByCategory = () => {
     saveFavoritesToLocalStorage(updatedFavorites);
   };
 
-  // Toggle Buy status and send request to backend
-  const toggleBuy = async (bookId, status) => {
-    // Assume user data is stored in localStorage or use fictive user_id=2
-    const userData = JSON.parse(localStorage.getItem('user')) || { user_id: 2 };
-    const userId = userData.user_id;
+  // Ta bort bok från varukorgen
+const toggleBuy = async (bookId, status) => {
+  const userData = JSON.parse(localStorage.getItem('user')) || { user_id: 2 };
+  const userId = userData.user_id;
 
-    if (status) {
-      // Add book to basket (quantity set to 1)
-      try {
-        const response = await fetch('http://localhost:5000/api/basket', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ user_id: userId, book_id: bookId, quantity: 1 })
-        });
-        if (!response.ok) {
-          throw new Error('Failed to add book to basket');
-        }
-        setBoughtBooks(prev => [...prev, bookId]);
-      } catch (error) {
-        console.error('Error adding book to basket:', error);
-      }
-    } else {
-      // Remove book from basket
-      try {
-        const response = await fetch(`http://localhost:5000/api/basket/${bookId}`, {
-          method: 'DELETE'
-        });
-        if (!response.ok) {
-          throw new Error('Failed to remove book from basket');
-        }
-        setBoughtBooks(prev => prev.filter(id => id !== bookId));
-      } catch (error) {
-        console.error('Error removing book from basket:', error);
-      }
+  if (status) {
+    // Lägg till bok
+    try {
+      const response = await fetch('http://localhost:5000/api/basket', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userId, book_id: bookId, quantity: 1 })
+      });
+      if (!response.ok) throw new Error('Kunde inte lägga till boken i varukorgen');
+      setBoughtBooks(prev => [...prev, bookId]);
+      if (showBasket) fetchBasket();
+    } catch (error) {
+      console.error('Error adding book to basket:', error);
     }
-  };
+  } else {
+    // Ta bort bok
+    try {
+      const response = await fetch(`http://localhost:5000/api/basket/${bookId}`, {
+        method: 'DELETE'
+      });
+      if (!response.ok) throw new Error('Kunde inte ta bort boken från varukorgen');
+      setBoughtBooks(prev => prev.filter(id => id !== bookId));
+      // Efter att boken tagits bort, hämta basketen på nytt
+      if (showBasket) fetchBasket();
+    } catch (error) {
+      console.error('Error removing book from basket:', error);
+    }
+  }
+};
 
   // Fetch the basket items from the backend
   const fetchBasket = async () => {
@@ -130,7 +149,7 @@ const BooksByCategory = () => {
     <div>
       <h2>Böcker i kategorin {category}</h2>
       <button onClick={toggleBasketVisibility}>
-        {showBasket ? 'Göm/Uppdatera Varukorg' : 'Visa Varukorg'}
+        {showBasket ? 'Göm Varukorg' : 'Visa Varukorg'}
       </button>
       
       {showBasket && basket && (
@@ -147,7 +166,7 @@ const BooksByCategory = () => {
             <thead>
               <tr>
                 <th style={{ border: "1px solid #000", padding: "8px" }}>Kategori</th>
-                <th style={{ border: "1px solid #000", padding: "8px" }}>Bok</th>
+                <th style={{ border: "1px solid #000", padding: "8px" }}>Böcker</th>
                 <th style={{ border: "1px solid #000", padding: "8px" }}>Pris</th>
               </tr>
             </thead>
