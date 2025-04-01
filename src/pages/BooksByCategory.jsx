@@ -13,6 +13,8 @@ const BooksByCategory = () => {
   
   const [favorites, setFavorites] = useState([]);
   const [boughtBooks, setBoughtBooks] = useState([]);
+  const [basket, setBasket] = useState(null);
+  const [showBasket, setShowBasket] = useState(false);
 
   // Load favorites from local storage
   useEffect(() => {
@@ -37,27 +39,17 @@ const BooksByCategory = () => {
 
   // Toggle Buy status and send request to backend
   const toggleBuy = async (bookId, status) => {
-    // Assume that the user is logged in and user data is stored in localStorage as JSON.
-    const userData = JSON.parse(localStorage.getItem('user'));
-    const userId = userData ? userData.user_id : null;
-    if (!userId) {
-      console.error('User not logged in');
-      return;
-    }
+    // Assume user data is stored in localStorage or use fictive user_id=2
+    const userData = JSON.parse(localStorage.getItem('user')) || { user_id: 2 };
+    const userId = userData.user_id;
 
     if (status) {
       // Add book to basket (quantity set to 1)
       try {
         const response = await fetch('http://localhost:5000/api/basket', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            user_id: userId,
-            book_id: bookId,
-            quantity: 1
-          })
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_id: userId, book_id: bookId, quantity: 1 })
         });
         if (!response.ok) {
           throw new Error('Failed to add book to basket');
@@ -67,7 +59,7 @@ const BooksByCategory = () => {
         console.error('Error adding book to basket:', error);
       }
     } else {
-      // Optionally: remove book from basket (if your API supports this)
+      // Remove book from basket
       try {
         const response = await fetch(`http://localhost:5000/api/basket/${bookId}`, {
           method: 'DELETE'
@@ -82,14 +74,37 @@ const BooksByCategory = () => {
     }
   };
 
+  // Fetch the basket items from the backend
+  const fetchBasket = async () => {
+    // Using fictive user_id=2 (or get from localStorage)
+    try {
+      const response = await fetch(`http://localhost:5000/api/basket/2`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch basket');
+      }
+      const data = await response.json();
+      setBasket(data);
+    } catch (error) {
+      console.error("Error fetching basket:", error);
+    }
+  };
+
+  // Toggle basket visibility; fetch data if showing
+  const toggleBasketVisibility = () => {
+    if (!showBasket) {
+      fetchBasket();
+    }
+    setShowBasket(!showBasket);
+  };
+
   const renderStars = (rating) => {
     let stars = [];
     for (let i = 1; i <= 5; i++) {
-      if (i <= rating) {
-        stars.push(<span key={i} className="star-rating full">&#9733;</span>);
-      } else {
-        stars.push(<span key={i} className="star-rating empty">&#9733;</span>);
-      }
+      stars.push(
+        <span key={i} className={i <= rating ? "star-rating full" : "star-rating empty"}>
+          &#9733;
+        </span>
+      );
     }
     return stars;
   };
@@ -105,21 +120,58 @@ const BooksByCategory = () => {
         setLoading(false);
       }
     };
-
     loadBooks();
   }, [category]);
 
-  if (loading) {
-    return <div>Laddar böcker...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
+  if (loading) return <div>Laddar böcker...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div>
       <h2>Böcker i kategorin {category}</h2>
+      <button onClick={toggleBasketVisibility}>
+        {showBasket ? 'Göm/Uppdatera Varukorg' : 'Visa Varukorg'}
+      </button>
+      
+      {showBasket && basket && (
+        <div className="basket-box">
+          <h3>
+            VARUKORG{" "}
+            {basket.basket_items.length > 0 && (
+              <span style={{ fontWeight: "normal" }}>
+                ({basket.basket_items[0].username})
+              </span>
+            )}
+          </h3>
+          <table style={{ borderCollapse: "collapse", width: "auto" }}>
+            <thead>
+              <tr>
+                <th style={{ border: "1px solid #000", padding: "8px" }}>Kategori</th>
+                <th style={{ border: "1px solid #000", padding: "8px" }}>Bok</th>
+                <th style={{ border: "1px solid #000", padding: "8px" }}>Pris</th>
+              </tr>
+            </thead>
+            <tbody>
+              {basket.basket_items.map((item, index) => (
+                <tr key={index}>
+                  <td style={{ border: "1px solid #000", padding: "8px" }}>{item.book_category}</td>
+                  <td style={{ border: "1px solid #000", padding: "8px" }}>{item.book_title}</td>
+                  <td style={{ border: "1px solid #000", padding: "8px" }}>{item.book_price} SEK</td>
+                </tr>
+              ))}
+              <tr>
+                <td colSpan="2" style={{ border: "1px solid #000", padding: "8px", fontWeight: "bold" }}>
+                  Total
+                </td>
+                <td style={{ border: "1px solid #000", padding: "8px", fontWeight: "bold" }}>
+                  {basket.total} SEK
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      )}
+
       <div className="books-container">
         {books.map((book) => (
           <div key={book.book_id} className="book-item">
@@ -136,18 +188,13 @@ const BooksByCategory = () => {
                 toggleBuy={toggleBuy}
               />
             </div>
-
             <p>
               <Link to={`/book/${book.book_id}`}>
                 {book.book_title}
               </Link>
             </p>
-            
             <p className="book-price">Price: {book.book_price}</p>
-
-            <div className="stars">
-              {renderStars(book.book_rating)}
-            </div>
+            <div className="stars">{renderStars(book.book_rating)}</div>
           </div>
         ))}
       </div>
