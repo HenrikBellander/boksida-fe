@@ -15,11 +15,9 @@ function App() {
       <BrowserRouter>
         <Header />
         <Routes>
-          {/* Public routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />D
           
-          {/* Protected routes */}
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<Categories />} />
             <Route path="/category/:category" element={<BooksByCategory />} />

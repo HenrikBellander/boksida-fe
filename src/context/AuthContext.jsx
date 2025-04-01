@@ -14,6 +14,7 @@ export const AuthProvider = ({ children }) => {
                 setUser(userData);
             } catch (error) {
                 setUser(null);
+                console.log(error)
             } finally {
                 setIsLoading(false);
             }
@@ -27,7 +28,7 @@ export const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            await fetch('/api/auth/logout', { 
+            await fetch('/auth/logout', { 
                 method: 'POST', 
                 credentials: 'include' 
             });

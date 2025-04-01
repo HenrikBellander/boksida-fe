@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Changed from navigate to useNavigate
 import { useAuth } from "../context/AuthContext";
 import { loginUser } from '../services/authApi';
 
@@ -7,14 +8,22 @@ function Login() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const { login } = useAuth();
+    const navigate = useNavigate(); // Proper hook usage
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log("Login attempted with:", { username, password });
+        
         try {
+            console.log("Attempting login API call");
             const response = await loginUser({ username, password });
+            
             login(response.user);
+            console.log("Login successful:", response.user);
+            navigate('/');
         } catch (err) {
-            setError(err.message);
+            console.error('Login error:', err);
+            setError(err.message || 'Login failed. Please try again.');
         }
     };
 
@@ -28,12 +37,14 @@ function Login() {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     placeholder="Username"
+                    required
                 />
                 <input
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Password"
+                    required
                 />
                 <button type="submit">Login</button>
             </form>

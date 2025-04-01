@@ -1,5 +1,9 @@
+const BASE_URL = 'http://localhost:5000';
+/*import axiosInstance from "./axiosInstance";*/
+
 export const loginUser = async (credentials) => {
-    const response = await fetch('/api/auth/login', {
+    const response = await fetch(`${BASE_URL}/auth/login`, {
+    /*const response = await axiosInstance.post('/auth/login'), {*/
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials),
@@ -11,11 +15,11 @@ export const loginUser = async (credentials) => {
         throw new Error(error.error || 'Login failed');
     }
 
-    return response.json();
+    return await response.json();
 };
 
 export const verifyToken = async () => {
-    const response = await fetch('/api/auth/me', {
+    const response = await fetch('/auth/me', {
         credentials: 'include'
     });
 
