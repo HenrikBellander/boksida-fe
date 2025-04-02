@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 
-
 const Register = () => {
 
     const [formData, setFormData] = useState({
@@ -9,6 +8,9 @@ const Register = () => {
         email: ''
     });
   
+    const [responseMessage, setResponseMessage] = useState('');
+
+
     const [responseMessage, setResponseMessage] = useState('');
 
 
@@ -58,11 +60,11 @@ const Register = () => {
     return (
         <div className="register-form">
             <form onSubmit={handleRegister} method='POST'>
-                <label for='username'>Username: </label>
+                <label htmlFor='username'>Username: </label>
                 <input type='text' name='username' value={formData.username} onChange={handleChange}/> <br/>
-                <label for='password'>Password: </label>
+                <label htmlFor='password'>Password: </label>
                 <input type='password' name='password' value={formData.password} onChange={handleChange}/><br/>
-                <label for='email'>Email: </label>
+                <label htmlFor='email'>Email: </label>
                 <input type='text' name='email' value={formData.email} onChange={handleChange}/><br/>
                 <button type='submit'>Register</button>
             </form>
@@ -78,4 +80,3 @@ const Register = () => {
 
 
 export default Register;
-
