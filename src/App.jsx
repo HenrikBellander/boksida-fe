@@ -17,12 +17,12 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />D
-          
+            
           <Route element={<ProtectedRoute />}>
-            <Route path="/" element={<Categories />} />
-            <Route path="/category/:category" element={<BooksByCategory />} />
-            <Route path="/book/:book_id" element={<BookDetail />} />
-            <Route path="/search" element={<Search />} />
+            <Route index element={<Categories />} />
+            <Route path="category/:category" element={<BooksByCategory />} />
+            <Route path="book/:book_id" element={<BookDetail />} />
+            <Route path="search" element={<Search />} />
           </Route>
         </Routes>
       </BrowserRouter>
