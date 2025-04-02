@@ -64,3 +64,38 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+
+
+.contact-container {
+  padding: 20px;  /* Lägg till padding för att skapa utrymme runt innehållet */
+}
+
+.contact-container h2, .contact-container p {
+  margin: 0 0 10px 0;  /* Lägg till lite utrymme under varje h2 och p för att skapa mellanrum */
+  text-align: center; /* Centrera texten */
+}
+
+.team-members {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.team-member {
+  width: 220px;
+  text-align: center;
+  border: 3px solid #ddd;
+  padding: 20px;
+}
+
+.team-member img {
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+}
+.team-member-phone {
+  color: #007bff;
+  margin-top: 5px;
+}

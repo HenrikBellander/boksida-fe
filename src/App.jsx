@@ -6,6 +6,8 @@ import BookDetail from './pages/BookDetail';
 import Search from "./components/Search";
 import Register from "./pages/Register";
 import LoginPage from './pages/LoginPage';
+import Team from "./pages/Team";
+
 
 function App() {
 
@@ -20,6 +22,8 @@ function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/register" element={<Register />}/>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/team" element={<Team />} />
+
         </Routes>
       </BrowserRouter>
     </>

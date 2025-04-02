@@ -38,6 +38,7 @@ const Header = () => {
       <nav className="navbar">
         <a href="/" className="nav-link">Home</a>
         <a href="/register" className="nav-link">Register</a>
+        <a href="/team" className="nav-link">Contact</a>
       </nav>
     </header>
   );
