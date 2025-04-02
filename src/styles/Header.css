@@ -1,0 +1,121 @@
+.bookstore-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background: linear-gradient(135deg, #4e79ae, #2c3e50); 
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    color: white;
+}
+
+.logo-container h1 {
+    font-size: 2.8rem;
+    font-weight: bold;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding: 8px 10px; 
+    border-radius: 25px;
+    width: 40%; 
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-bar {
+    border: none;
+    outline: none;
+    font-size: 1rem; 
+    color: #7f8c8d;
+    flex-grow: 1;
+    padding: 8px 12px;
+    border-radius: 20px;
+}
+
+.search-bar::placeholder {
+    color: #bdc3c7;
+}
+
+.search-button {
+    background-color: #e74c3c; 
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+    background-color: #c0392b;
+}
+
+.navbar {
+    display: flex;
+    gap: 20px;
+    font-size: 1.1rem;
+}
+
+.nav-link {
+    color: #ecf0f1;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #3498db; 
+}
+
+@media (max-width: 1024px) {
+    .bookstore-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+    }
+
+    .logo-container h1 {
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+    }
+
+    .search-container {
+        width: 80%; 
+        margin-top: 15px;
+    }
+
+    .search-button {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .bookstore-header {
+        padding: 15px 20px;
+    }
+
+    .logo-container h1 {
+        font-size: 1.8rem;
+    }
+
+    .navbar {
+        margin-top: 15px;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .search-button {
+        padding: 8px 18px;
+    }
+}
+
+  
+
+  
+  
