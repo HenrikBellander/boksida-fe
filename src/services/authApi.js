@@ -1,5 +1,5 @@
 export const loginUser = async (credentials) => {
-    const response = await fetch('/api/auth/login', {
+    const response = await fetch('http://localhost:5000/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials),
@@ -15,7 +15,7 @@ export const loginUser = async (credentials) => {
 };
 
 export const verifyToken = async () => {
-    const response = await fetch('/api/auth/me', {
+    const response = await fetch('/auth/me', {
         credentials: 'include'
     });
 
