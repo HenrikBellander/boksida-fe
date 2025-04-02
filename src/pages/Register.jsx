@@ -7,12 +7,8 @@ const Register = () => {
         name: '',
         email: ''
     });
-  
-    const [responseMessage, setResponseMessage] = useState('');
-
 
     const [responseMessage, setResponseMessage] = useState('');
-
 
     const handleChange = (e) => {
         const { name, value } = e.target;
