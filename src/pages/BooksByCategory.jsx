@@ -5,18 +5,35 @@ import FavoriteButton from "../components/FavoriteButton";
 import BuyBookButton from "../components/BuyBookButton";
 import '../styles/books.css';
 
+/*export default function BooksByCategory() {*/
+
 const BooksByCategory = () => {
   const { category } = useParams();
+  console.log('Received category param:', category); // Debug
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
   const [favorites, setFavorites] = useState([]);
   const [boughtBooks, setBoughtBooks] = useState([]);
   const [basket, setBasket] = useState(null);
   const [showBasket, setShowBasket] = useState(false);
 
+
   // Load favorites from local storage
+
+  /*useEffect(() => {
+    const fetchData = async () => {
+      try {
+        console.log('Fetching for category:', category);
+        const data = await fetchBooksByCategory(category);
+        console.log('Received data:', data);
+      } catch (error) {
+        console.error('Fetch error:', error);
+      }
+    };
+    fetchData();
+  }, [category]);*/
+
   useEffect(() => {
     const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
     setFavorites(storedFavorites);
