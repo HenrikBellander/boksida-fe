@@ -38,7 +38,7 @@ const Register = () => {
                 const data = await response.json();
                 console.log('Data sent successfully:', data);
 
-                if (typeof(data) === 'number') {
+                if (data.user) {
                     setResponseMessage('User created successfully');
                     setFormData({ username: '', password: '', email: '' });
                 } else {
