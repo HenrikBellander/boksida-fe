@@ -4,61 +4,27 @@ import { fetchBooksByCategory } from "../services/bookApi";
 import FavoriteButton from "../components/FavoriteButton"; 
 import BuyBookButton from "../components/BuyBookButton";
 import '../styles/books.css';
-
-/*export default function BooksByCategory() {*/
+import { useAuth } from "../context/AuthContext";
 
 const BooksByCategory = () => {
   const { category } = useParams();
-  console.log('Received category param:', category); // Debug
+  const { user } = useAuth(); // Use the user from AuthContext
+  console.log('Logged in user:', user);
+
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
   const [favorites, setFavorites] = useState([]);
   const [boughtBooks, setBoughtBooks] = useState([]);
   const [basket, setBasket] = useState(null);
   const [showBasket, setShowBasket] = useState(false);
 
-
   // Load favorites from local storage
-
-  /*useEffect(() => {
-    const fetchData = async () => {
-      try {
-        console.log('Fetching for category:', category);
-        const data = await fetchBooksByCategory(category);
-        console.log('Received data:', data);
-      } catch (error) {
-        console.error('Fetch error:', error);
-      }
-    };
-    fetchData();
-  }, [category]);*/
-
   useEffect(() => {
     const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
     setFavorites(storedFavorites);
   }, []);
-
-  // Hämta varukorgen när komponenten mountas
-  useEffect(() => {
-    const fetchBasket = async () => {
-      try {
-        const response = await fetch(`http://localhost:5000/api/basket/2`);
-        if (!response.ok) {
-          throw new Error('Kunde inte hämta varukorgen');
-        }
-        const data = await response.json();
-        setBasket(data);
-        if (data.basket_items) {
-          setBoughtBooks(data.basket_items.map(item => item.book_id));
-        }
-      } catch (error) {
-        console.error("Error fetching basket:", error);
-      }
-    };
-
-    fetchBasket();
-  }, []);  
 
   const saveFavoritesToLocalStorage = (updatedFavorites) => {
     localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
@@ -75,46 +41,53 @@ const BooksByCategory = () => {
     saveFavoritesToLocalStorage(updatedFavorites);
   };
 
-  // Ta bort bok från varukorgen
-const toggleBuy = async (bookId, status) => {
-  const userData = JSON.parse(localStorage.getItem('user')) || { user_id: 2 };
-  const userId = userData.user_id;
-
-  if (status) {
-    // Lägg till bok
-    try {
-      const response = await fetch('http://localhost:5000/api/basket', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: userId, book_id: bookId, quantity: 1 })
-      });
-      if (!response.ok) throw new Error('Kunde inte lägga till boken i varukorgen');
-      setBoughtBooks(prev => [...prev, bookId]);
-      if (showBasket) fetchBasket();
-    } catch (error) {
-      console.error('Error adding book to basket:', error);
+  // Toggle Buy status and send request to backend using the user id from AuthContext
+  const toggleBuy = async (bookId, status) => {
+    if (!user || !user.id) {
+      console.error("User not logged in");
+      return;
     }
-  } else {
-    // Ta bort bok
-    try {
-      const response = await fetch(`http://localhost:5000/api/basket/${bookId}`, {
-        method: 'DELETE'
-      });
-      if (!response.ok) throw new Error('Kunde inte ta bort boken från varukorgen');
-      setBoughtBooks(prev => prev.filter(id => id !== bookId));
-      // Efter att boken tagits bort, hämta basketen på nytt
-      if (showBasket) fetchBasket();
-    } catch (error) {
-      console.error('Error removing book from basket:', error);
-    }
-  }
-};
+    const userId = user.id;
 
-  // Fetch the basket items from the backend
+    if (status) {
+      // Add book to basket (quantity set to 1)
+      try {
+        const response = await fetch('http://localhost:5000/api/basket', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_id: userId, book_id: bookId, quantity: 1 })
+        });
+        if (!response.ok) {
+          throw new Error('Failed to add book to basket');
+        }
+        setBoughtBooks(prev => [...prev, bookId]);
+      } catch (error) {
+        console.error('Error adding book to basket:', error);
+      }
+    } else {
+      // Remove book from basket
+      try {
+        const response = await fetch(`http://localhost:5000/api/basket/${bookId}`, {
+          method: 'DELETE'
+        });
+        if (!response.ok) {
+          throw new Error('Failed to remove book from basket');
+        }
+        setBoughtBooks(prev => prev.filter(id => id !== bookId));
+      } catch (error) {
+        console.error('Error removing book from basket:', error);
+      }
+    }
+  };
+
+  // Fetch the basket items from the backend using the logged-in user's id
   const fetchBasket = async () => {
-    // Using fictive user_id=2 (or get from localStorage)
+    if (!user || !user.id) {
+      console.error("User not logged in");
+      return;
+    }
     try {
-      const response = await fetch(`http://localhost:5000/api/basket/2`);
+      const response = await fetch(`http://localhost:5000/api/basket/${user.id}`);
       if (!response.ok) {
         throw new Error('Failed to fetch basket');
       }
@@ -125,7 +98,7 @@ const toggleBuy = async (bookId, status) => {
     }
   };
 
-  // Toggle basket visibility; fetch data if showing
+  // Toggle basket visibility; if opening, fetch the basket using the current user's id
   const toggleBasketVisibility = () => {
     if (!showBasket) {
       fetchBasket();
@@ -166,7 +139,7 @@ const toggleBuy = async (bookId, status) => {
     <div>
       <h2>Böcker i kategorin {category}</h2>
       <button onClick={toggleBasketVisibility}>
-        {showBasket ? 'Göm Varukorg' : 'Visa Varukorg'}
+        {showBasket ? 'Göm/Uppdatera Varukorg' : 'Visa Varukorg'}
       </button>
       
       {showBasket && basket && (
