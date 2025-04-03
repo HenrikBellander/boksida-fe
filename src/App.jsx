@@ -6,6 +6,7 @@ import Categories from "./pages/Categories";
 import BooksByCategory from "./pages/BooksByCategory";
 import BookDetail from './pages/BookDetail';
 import Search from "./components/Search";
+import Team from "./pages/Team";
 import Register from './pages/Register';
 import Login from './pages/Login';
 
@@ -18,14 +19,13 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />D
-            
+          <Route path="/team" element={<Team />} />  
           <Route element={<ProtectedRoute />}>
             <Route index element={<Categories />} />
             <Route path="category/:category" element={<BooksByCategory />} />
             <Route path="book/:book_id" element={<BookDetail />} />
             <Route path="search" element={<Search />} />
           </Route>
-
         </Routes>
       </BrowserRouter>
     </AuthProvider>
