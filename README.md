@@ -25,15 +25,16 @@ Färgschema, font. (motivering)
 # PR-regler
 Vi samarbetar vid pull requests då vi alla är nya på detta.
 
-# Databasstruktur
+# Databasstruktur 
 
-Vi har fyra tabeller:
-- Böcker
-- Användare
-- Favoritmarkeringar
-- Varukorg
-  Både varukorg och favoriter är kopplingstabeller mellan böcker och användare.
+Vi har i SQLite-databasen books_data.db fyra tabeller:
+- Böcker (books)
+- Användare (users)
+- Favoritmarkeringar (favorites)
+- Varukorg (basket)
+  Både basket och favorites är kopplingstabeller mellan books och users.
+  ![ER-diagram](ER_books_data.png)
 
 # Kända buggar
 
-Inga i nuläget.
+När man markerar ✅ nere till höger på en bok adderas boken koppat till user i kopplingstabellen basket i databasen, samtidigt uppdateras varukorgen i realtid i frontend. Man kan växla kategori, lägga till, ta bort på alla sätt - både databasen och frontens varukorg hänger med. Men när man tar bort SISTA boken från varukorgen, så uppdateras och töms databasen korrekt för usern, men på fronten ligger den enda boken kvar. Om man backar tilll kategoritabellen - och sedan går in i samma (eller annan) kategori igen - så är det rätt, varukorgen tom. Om detta fel har det tänkts mycket...
