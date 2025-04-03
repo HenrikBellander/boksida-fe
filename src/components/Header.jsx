@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Header.css';
+import AuthButton from './AuthButton';
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -39,6 +40,8 @@ const Header = () => {
         <a href="/" className="nav-link">Home</a>
         <a href="/register" className="nav-link">Register</a>
         <a href="/team" className="nav-link">Contact</a>
+        <AuthButton />
+
       </nav>
     </header>
   );
