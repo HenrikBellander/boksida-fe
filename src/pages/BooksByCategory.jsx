@@ -173,11 +173,6 @@ const toggleBuy = async (bookId, status) => {
         <div className="basket-box">
           <h3>
             VARUKORG{" "}
-            {basket.basket_items.length > 0 && (
-              <span style={{ fontWeight: "normal" }}>
-                ({basket.basket_items[0].username})
-              </span>
-            )}
           </h3>
           <table style={{ borderCollapse: "collapse", width: "auto" }}>
             <thead>
