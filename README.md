@@ -23,7 +23,7 @@ Färgschema, font. (motivering)
   - Features branchar ut från dev och mergas in när de är färdiga.
 
 # PR-regler
-Vi var alla hyfsat osäkra på Git och GitHub. Ganska snart upptäckte vi att vi behöver koordinera. Vi valde att ha fasta möte då vi skulle uppdatera dev - möja alltså göra polrequest och gå igenom filer vid behov tillsammans. Men sedan var alla fria att utveckla i egna branches med commits. Erfarenheten var att detta var svårare än vi trodde, det blev en del missförstånd som vi sedan fick ägna tid att hantera och parera. Dock blev vi bättre efterhand och lärde oss väldigt mycket av detta. Henrik var den som hade bäst koll på just denna biten, varför han oftast ledde arbetet, medans vi andra granskade på hans delade skärm.
+Vi var alla hyfsat osäkra på Git och GitHub. Ganska snart upptäckte vi att vi behövde koordinera. Vi valde att ha fasta möte då vi skulle uppdatera dev - merga, alltså göra pull request och gå igenom, vid behov välja/ta bort kod i våra filer tillsammans. Men sedan var alla fria att utveckla i egna branches med commits. Erfarenheten var att detta var svårare än vi trodde, det blev en del missförstånd som vi sedan fick ägna tid att hantera och parera. Dock blev vi bättre efterhand och lärde oss väldigt mycket av detta. Henrik var den som hade bäst koll på just denna biten, varför han oftast ledde arbetet, medans vi andra granskade på hans delade skärm. Insikten var att vid arbete med nya människor eller i en ny organisation, t ex LIA - är det klokt att tidigt prata med ansvarig chef, projektledare och/eller kollegor om vilka regler och rutiner som gäller, och om de är dokumenterade.
 
 # Databasstruktur 
 
@@ -38,4 +38,4 @@ Vi har i SQLite-databasen books_data.db fyra tabeller:
 
 # Kända buggar
 
-När man markerar ✅ nere till höger på en bok adderas boken koppat till user i kopplingstabellen basket i databasen, samtidigt uppdateras varukorgen i realtid i frontend. Man kan växla kategori, lägga till, ta bort på alla sätt - både databasen och frontens varukorg hänger med. Men när man tar bort SISTA boken från varukorgen, så uppdateras och töms databasen korrekt för usern, men på fronten ligger den enda boken kvar. Om man backar tilll kategoritabellen - och sedan går in i samma (eller annan) kategori igen - så är det rätt, varukorgen tom. Om detta fel har det tänkts mycket...
+Funktionen Basket/Varukorg: När man markerar ✅ nere till höger på en bok adderas boken koppat till user i kopplingstabellen basket i databasen, samtidigt uppdateras varukorgen i realtid i frontend. Man kan växla kategori, lägga till, ta bort på alla sätt - både databasen och frontens varukorg hänger med. Men när man tar bort SISTA boken från varukorgen, så uppdateras och töms databasen korrekt för usern, men på fronten ligger den enda boken kvar. Om man backar tilll kategoritabellen - och sedan går in i samma (eller annan) kategori igen - så är det rätt, varukorgen tom. Om detta fel har det tänkts mycket...
