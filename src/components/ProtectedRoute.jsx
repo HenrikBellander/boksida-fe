@@ -17,8 +17,6 @@ const ProtectedRoute = ({ children }) => {
     }
 
     if (!user) {
-        /*return <Navigate to="/login" replace />;*/
-        // Store attempted location for post-login redirect:
         console.log("Redirecting to login from:", location.pathname);
         return <Navigate to="/login" state={{ from: location }} replace />;
     }

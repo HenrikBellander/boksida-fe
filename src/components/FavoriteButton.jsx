@@ -20,6 +20,3 @@ const FavoriteButton = ({ bookId, isFavorite, toggleFavorite }) => {
 };
 
 export default FavoriteButton;
-
-
-

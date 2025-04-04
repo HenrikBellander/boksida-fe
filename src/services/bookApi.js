@@ -36,5 +36,3 @@ export const fetchBookDetail = async (book_id) => {
     throw new Error('Could not fetch book details');
   }
 };
-
-
