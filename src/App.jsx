@@ -9,7 +9,9 @@ import Search from "./components/Search";
 import Team from "./pages/Team";
 import Register from './pages/Register';
 import Login from './pages/Login';
+import Footer from "./components/Footer";
 import Admin from "./pages/Admin";
+
 
 
 function App() {
@@ -29,6 +31,7 @@ function App() {
             <Route path="/admin" element={<Admin />} />
           </Route>
         </Routes>
+        <Footer />
       </BrowserRouter>
     </AuthProvider>
   );
