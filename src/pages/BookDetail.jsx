@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import FavoriteButton from "../components/FavoriteButton"; 
 import { fetchBookDetail } from "../services/bookApi";
+import useFavorites from "../hooks/useFavorites"; // Importera hooken
 import '../styles/books.css';
 
 const BookDetail = () => {
@@ -9,25 +10,7 @@ const BookDetail = () => {
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [favorites, setFavorites] = useState([]);
-
-  useEffect(() => {
-    const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    setFavorites(storedFavorites);
-  }, []);
-
-  const saveFavoritesToLocalStorage = (updatedFavorites) => {
-    localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
-  };
-
-  const toggleFavorite = (bookId, status) => {
-    let updatedFavorites = status 
-      ? [...favorites, bookId] 
-      : favorites.filter(id => id !== bookId);
-    
-    setFavorites(updatedFavorites);
-    saveFavoritesToLocalStorage(updatedFavorites);
-  };
+  const { favorites, toggleFavorite } = useFavorites(); // Använd hooken
 
   useEffect(() => {
     const loadBookDetail = async () => {
@@ -63,3 +46,4 @@ const BookDetail = () => {
 };
 
 export default BookDetail;
+

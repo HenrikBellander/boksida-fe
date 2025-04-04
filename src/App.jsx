@@ -9,6 +9,7 @@ import Search from "./components/Search";
 import Team from "./pages/Team";
 import Register from './pages/Register';
 import Login from './pages/Login';
+import Favorites from './components/Favorites';
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
             <Route path="category/:category" element={<BooksByCategory />} />
             <Route path="book/:book_id" element={<BookDetail />} />
             <Route path="search" element={<Search />} />
+            <Route path="/favorites" element={<Favorites />} />
           </Route>
         </Routes>
       </BrowserRouter>

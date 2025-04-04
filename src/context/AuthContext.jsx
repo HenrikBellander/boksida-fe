@@ -24,36 +24,11 @@ export function AuthProvider({ children }) {
         verifySession();
     }, []);
 
-    /*useEffect(() => {
-        const checkAuth = async () => {
-            try {
-                const userData = await verifyToken();
-                setUser(userData);
-            } catch (error) {
-                setUser(null);
-                console.log(error)
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        checkAuth();
-    }, []);*/
-
     const login = async (userData) => {
         setUser(userData);
         return await verifyToken();
     };
 
-    /*const logout = async () => {
-        try {
-            await fetch('/logout', {
-                method: 'POST',
-                credentials: 'include'
-            });
-        } finally {
-            setUser(null);
-        }
-    };*/
 
     const logout = async () => {
         try {
