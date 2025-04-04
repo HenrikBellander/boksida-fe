@@ -101,7 +101,3 @@ const BooksByCategory = () => {
 };
 
 export default BooksByCategory;
-
-
-
-

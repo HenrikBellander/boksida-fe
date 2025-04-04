@@ -7,7 +7,6 @@ export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
-    // Add persistent session check
     useEffect(() => {
         const verifySession = async () => {
             try {
@@ -24,36 +23,10 @@ export function AuthProvider({ children }) {
         verifySession();
     }, []);
 
-    /*useEffect(() => {
-        const checkAuth = async () => {
-            try {
-                const userData = await verifyToken();
-                setUser(userData);
-            } catch (error) {
-                setUser(null);
-                console.log(error)
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        checkAuth();
-    }, []);*/
-
     const login = async (userData) => {
         setUser(userData);
         return await verifyToken();
     };
-
-    /*const logout = async () => {
-        try {
-            await fetch('/logout', {
-                method: 'POST',
-                credentials: 'include'
-            });
-        } finally {
-            setUser(null);
-        }
-    };*/
 
     const logout = async () => {
         try {
@@ -61,13 +34,11 @@ export function AuthProvider({ children }) {
             method: 'POST',
             credentials: 'include'
             });
-          setUser(null); // Clear local state
+          setUser(null);
         } catch (error) {
             console.error('Logout error:', error);
         }
         };
-
-
 
     const value = {
         user,
@@ -90,5 +61,3 @@ export function useAuth() {
     }
     return context;
 }
-
-
