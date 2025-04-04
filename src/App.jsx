@@ -9,6 +9,7 @@ import Search from "./components/Search";
 import Team from "./pages/Team";
 import Register from './pages/Register';
 import Login from './pages/Login';
+import Admin from "./pages/Admin";
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
             <Route path="category/:category" element={<BooksByCategory />} />
             <Route path="book/:book_id" element={<BookDetail />} />
             <Route path="search" element={<Search />} />
+            <Route path="/admin" element={<Admin />} />
           </Route>
         </Routes>
       </BrowserRouter>
