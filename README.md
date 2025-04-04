@@ -23,7 +23,7 @@ Färgschema, font. (motivering)
   - Features branchar ut från dev och mergas in när de är färdiga.
 
 # PR-regler
-Vi samarbetar vid pull requests då vi alla är nya på detta.
+Vi var alla hyfsat osäkra på Git och GitHub. Ganska snart upptäckte vi att vi behöver koordinera. Vi valde att ha fasta möte då vi skulle uppdatera dev - möja alltså göra polrequest och gå igenom filer vid behov tillsammans. Men sedan var alla fria att utveckla i egna branches med commits. Erfarenheten var att detta var svårare än vi trodde, det blev en del missförstånd som vi sedan fick ägna tid att hantera och parera. Dock blev vi bättre efterhand och lärde oss väldigt mycket av detta. Henrik var den som hade bäst koll på just denna biten, varför han oftast ledde arbetet, medans vi andra granskade på hans delade skärm.
 
 # Databasstruktur 
 
@@ -32,7 +32,8 @@ Vi har i SQLite-databasen books_data.db fyra tabeller:
 - Användare (users)
 - Favoritmarkeringar (favorites)
 - Varukorg (basket)
-  Både basket och favorites är kopplingstabeller mellan books och users.
+
+- Både basket och favorites är kopplingstabeller mellan books och users.
   ![ER-diagram](ER_books_data.png)
 
 # Kända buggar
